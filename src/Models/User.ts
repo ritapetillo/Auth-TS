@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcypt from "bcryptjs";
+import { IUser } from "../services/interfaces/user";
 const schema = mongoose.Schema;
 
 export interface UserInterface extends mongoose.Document {
@@ -32,7 +33,7 @@ const UserSchema = new schema({
   },
 });
 
-UserSchema.pre<UserInterface>("save", async function (next) {
+UserSchema.pre<IUser>("save", async function (next) {
   if (!this.isModified("password")) return next();
   const salt: string = await bcypt.genSalt();
   this.password = await bcypt.hash(this.password, salt);
@@ -50,4 +51,4 @@ UserSchema.methods.toJSON = function () {
   const { password, ...rest } = user;
   return { ...rest };
 };
-export default mongoose.model<UserInterface>("users", UserSchema);
+export default mongoose.model<IUser>("users", UserSchema);

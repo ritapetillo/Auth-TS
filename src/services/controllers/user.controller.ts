@@ -19,6 +19,7 @@ export const registerController = async (
 ) => {
   try {
     const newUser = new User(req.body);
+    console.log(newUser)
     const savedUser = await newUser.save();
     res.send(savedUser);
   } catch (err) {

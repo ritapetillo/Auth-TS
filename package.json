@@ -12,12 +12,17 @@
   "license": "ISC",
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
+    "@types/cors": "^2.8.10",
+    "@types/redis": "^2.8.28",
     "atob": "^2.1.2",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "jwt-redis": "^6.0.0",
     "mongoose": "^5.11.16",
     "node-error-handler": "^1.1.14",
+    "redis": "^3.0.2",
     "ts-node": "^9.1.1"
   },
   "devDependencies": {

@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express";
-import { loginController } from "../controllers/auth.contoller";
+import { loginController, refreshToken } from "../controllers/auth.contoller";
 const authRoutes = express.Router();
 import { authMiddleware, isAdminMiddleware } from "../middlewares/auth";
 
 //GET ALL USERS
-authRoutes.post("/login", authMiddleware, loginController);
+authRoutes.post("/login", loginController);
 
 //GET ALL USERS
 authRoutes.post(
@@ -14,4 +14,9 @@ authRoutes.post(
   loginController
 );
 
+//GET ALL USERS
+authRoutes.post(
+  "/refresh",
+  refreshToken
+);
 export default authRoutes;
