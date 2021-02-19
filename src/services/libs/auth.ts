@@ -62,3 +62,17 @@ console.log(refreshToken)
     return null
     }
     }
+
+    export const generateAllTokens = async (user : {})=>{
+
+        try{
+        
+            const authToken = await generateToken(user)
+            const refreshToken = await generateRefreshToken(user)
+            if(authToken && refreshToken) return {authToken,refreshToken}
+        
+        
+        }catch(err){
+           return null
+        }
+        }

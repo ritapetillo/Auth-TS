@@ -1,10 +1,17 @@
 import express, { Request, Response } from "express";
-import { loginController, refreshToken } from "../controllers/auth.contoller";
+import { googleAuth, loginController, logout, refreshToken } from "../controllers/auth.contoller";
 const authRoutes = express.Router();
-import { authMiddleware, isAdminMiddleware } from "../middlewares/auth";
+import { authMiddleware, generateCookies, isAdminMiddleware } from "../middlewares/auth";
+import passport from 'passport'
 
-//GET ALL USERS
+//LOGIN
 authRoutes.post("/login", loginController);
+
+//LOGIN GOOGLE
+authRoutes.get("/google", passport.authenticate('google', { scope: ['profile','email'] }));
+
+//LOGIN GOOGLE
+authRoutes.get("/google/callback", passport.authenticate('google', { failureRedirect: '/login' }),generateCookies,googleAuth);
 
 //GET ALL USERS
 authRoutes.post(
@@ -19,4 +26,13 @@ authRoutes.post(
   "/refresh",
   refreshToken
 );
+
+//GET ALL USERS
+authRoutes.post(
+  "/logout",
+  logout
+);
+
+
+
 export default authRoutes;

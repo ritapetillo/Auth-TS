@@ -8,7 +8,10 @@ export interface UserInterface extends mongoose.Document {
   password: string;
   name?: string;
   lastName?: string;
+  picture?:String;
+  googleId:String;
   comparePassword(password: string): boolean;
+  role:string;
 }
 
 const UserSchema = new schema({
@@ -26,11 +29,17 @@ const UserSchema = new schema({
   lastName: {
     type: String,
   },
+  picture: {
+    type: String,
+  },
   role: {
     type: String,
     enum: ["admin", "user"],
     required: true,
   },
+  googleId:{
+    type:String
+  }
 });
 
 UserSchema.pre<IUser>("save", async function (next) {

@@ -5,9 +5,7 @@ import { verifyToken } from "../libs/auth";
 import { error } from "console";
 import { Idecoded } from "../interfaces/user";
 
-interface RequestHeaderAuth {
-  Authorization: String;
-}
+
 
 export const authMiddleware = async (
   req: any,
@@ -15,21 +13,23 @@ export const authMiddleware = async (
   next: NextFunction
 ) => {
  try { 
-  const { authorization }: any = req.headers;
-  if (!authorization) {
+  const {authToken} = req.cookies;
+  console.log(authToken)
+  
+  if (!authToken) {
     const error: any = new Error("Please provide a basic authentication");
     error.httpStatusCode = 401;
     next(error);
   }
-  const token = authorization.split(" ")[1]
-  const decoded : Idecoded | null | undefined = await verifyToken(token)
+  const decoded : Idecoded | null | undefined = await verifyToken(authToken)
   if(!decoded) throw error
   const user = await User.findById(decoded.id)
   req.user = user
   next()
   console.log(decoded)} catch(err){
     const error:any = new Error('You are not authorized');
-    error.code(404)
+    error.httpStatusCode = 401;
+    console.log(err)
     next(error)
     
   }
@@ -45,3 +45,15 @@ export const isAdminMiddleware = async (
   if (req.user.role === "admin") next();
   else next(Error("You are not autorize"));
 };
+
+export const generateCookies = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+)  =>{
+  console.log(req.user)
+  res.cookie('authToken',req.user.tokens.authToken,{httpOnly:true})
+  res.cookie('refreshToken',req.user.tokens.refreshToken,{httpOnly:true})
+  next()
+
+}

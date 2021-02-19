@@ -3,13 +3,22 @@ import mongoose from "mongoose";
 import error_handler from "node-error-handler";
 import apiRoutes from "./services";
 import cors from 'cors'
+import passport from 'passport'
+import  './services/libs/auth_google'
+import cookieParser from 'cookie-parser'
 const server = express();
 const PORT = process.env.PORT;
 
+const whitelist = ['http://localhost:3000']
 
 //MIDDLEWARES
 server.use(express.json());
-server.use(cors());
+server.use(passport.initialize())
+server.use(cookieParser())
+server.use(cors({
+  origin:whitelist,
+  credentials:true
+}));
 
 
 //ROUTES
